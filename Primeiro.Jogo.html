@@ -1,0 +1,56 @@
+<canvas width="600" height="400"></canvas>
+
+<script>
+	var tela= document.querySelector("canvas"); //1º parte criamos a tela.
+	var pincel= tela.getContext("2d");
+	pincel.fillStyle = "lightgray";
+	pincel.fillRect(0, 0, 600, 400);
+	
+	var xAleatorio; // aqui é necessário declarar fora da função para poder utiliza-las em qualquer outra função
+	var yAleatorio; // igual a instrução acima
+
+	var raio = 10; 
+	function desenharCirculo(x,y,raio,cor) { //Essa estrutura é para criar o circulo na tela.
+		pincel.fillStyle = cor;
+		pincel.beginPath();
+		pincel.arc(x,y,raio,0,2*Math.PI);
+		pincel.fill();
+	}
+	function limparTela() { // Essa estrutura é para evitar poluição de bolinhas na minha tela tendo uma função de limpar 
+		pincel.clearRect(0,0, 600, 400);
+	}
+	function desenhaAlvo(x,y) { // semelhante a estrutura de fazer circulos, dessa vez utilizei uma combinação de circulos. 
+
+	desenharCirculo(x,y,raio+20,"red");
+	desenharCirculo(x,y,raio+10,"white");
+	desenharCirculo(x,y,raio,"red");
+}
+	function sorteioPosicao(maximo) { // Essa estrutura cria possição aleatórias para o nosso alvo. 
+		return Math.floor(Math.random()*maximo);
+
+	}
+	function atualizaTela() { // Essa estrutura é importante para nosso projeto. Depois que criamos o alvo e limpamos para não ficar cheio de alvos na tela, ela faz conque a tela atualiza de tempos em tempo, depende so do usuare definir.
+		limparTela();
+		 xAleatorio = sorteioPosicao(600);
+		 yAleatorio = sorteioPosicao(400);
+		desenhaAlvo(xAleatorio,yAleatorio);
+	}
+
+setInterval(atualizaTela,1000);	
+
+function dispara(evento) { // Essa estrutura faz conque criamos um sinal de alerta no centro do alvo, por isso era importante declarar as variáveis xAleatorio e yAleatorio fora de uma função poruqe será necessário alinha a possição sorteado com a possição do disparo.
+
+        var x = evento.pageX - tela.offsetLeft;
+        var y = evento.pageY - tela.offsetTop;
+        if (x > xAleatorio - raio 
+            && x < xAleatorio + raio
+                && y > yAleatorio - raio 
+                    && y < yAleatorio + raio) {
+
+            alert("Você Acertou");
+        }
+
+    }
+
+    tela.onclick = dispara;
+</script>
